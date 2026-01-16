@@ -17,7 +17,8 @@ public class BeeEnemy : MonoBehaviour
     public float attackRange = 1f;        // дистанция, при которой пчела начинает атаковать (кулачком)
     public float chaseSpeed = 3.5f;       // скорость преследования
     public float attackCooldown = 1f;     // интервал между атаками
-    public int damage = 10;               // урон игроку при атаке
+    public int damage = 15;               // урон игроку при атаке
+    public float knockbackForce = 3f;
 
     [Header("Misc")]
     public LayerMask playerLayer;         // слой, на котором находится Player (или используйте Tag)
@@ -184,7 +185,7 @@ public class BeeEnemy : MonoBehaviour
                 if (playerRb != null)
                 {
                     Vector2 knock = ((Vector2)c.transform.position - (Vector2)transform.position).normalized;
-                    playerRb.AddForce(knock * 3f, ForceMode2D.Impulse); // лёгкий толчок
+                    playerRb.AddForce(knock * knockbackForce, ForceMode2D.Impulse); // лёгкий толчок
                 }
             }
         }
