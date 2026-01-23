@@ -14,6 +14,10 @@ public class Health : MonoBehaviour
         Current = maxHp;
     }
 
+    private void Start()
+    {
+        OnHealthChanged?.Invoke(Current, maxHp);
+    }
     public void TakeDamage(int amount)
     {
         if(Current <= 0)
