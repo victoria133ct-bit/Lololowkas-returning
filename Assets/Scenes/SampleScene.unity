@@ -4771,7 +4771,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.4187193, y: 0.24622011, z: -10}
+  m_LocalPosition: {x: 5.849663, y: 9.78574, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5122,7 +5122,7 @@ Transform:
   m_GameObject: {fileID: 1236405612}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.02, y: -2.869, z: -10}
+  m_LocalPosition: {x: -0.18, y: 12.23, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5424,7 +5424,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 1447039933}
   movement: {fileID: 1447039931}
+  input: {fileID: 0}
   useFlipX: 1
+  speedDeadZone: 0.05
 --- !u!114 &1447039945
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5456,7 +5458,7 @@ MonoBehaviour:
   enemyLayer:
     serializedVersion: 2
     m_Bits: 128
-  attackCooldown: 0.5
+  attackCooldown: 0.1
   inputHandler: {fileID: 1447039932}
   animator: {fileID: 1447039933}
 --- !u!1 &1786225003 stripped
@@ -5503,6 +5505,7 @@ MonoBehaviour:
   attackCooldown: 1
   damage: 10
   knockbackForce: 3
+  hoverHeightOffset: 1
   playerLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -13142,6 +13145,10 @@ PrefabInstance:
       propertyPath: m_Material
       value: 
       objectReference: {fileID: 6200000, guid: 836c679b94965fa40af9e53e29032d14, type: 2}
+    - target: {fileID: 2921383963476648386, guid: ae85a3d5956d7b649b0cecfa98b66ced, type: 3}
+      propertyPath: m_GravityScale
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -13207,11 +13214,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8936360575983902263, guid: 0945975f532b3e649af796325be2fcc6, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -6.02
+      value: -0.18
       objectReference: {fileID: 0}
     - target: {fileID: 8936360575983902263, guid: 0945975f532b3e649af796325be2fcc6, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.869
+      value: 12.23
       objectReference: {fileID: 0}
     - target: {fileID: 8936360575983902263, guid: 0945975f532b3e649af796325be2fcc6, type: 3}
       propertyPath: m_LocalPosition.z

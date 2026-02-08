@@ -2,6 +2,11 @@
 using UnityEngine;
 
 // BeeEnemy: простая state-machine для пчелы (patrol -> chase -> attack -> dead)
+//
+// ВАЖНО: Настройка Animation Events в Unity:
+// - В анимации "Attack" добавьте событие "OnAttackHit" в момент удара (середина анимации)
+// - В анимации "Attack" добавьте событие "OnAttackEnd" в конце анимации
+//
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Animator))]
 public class BeeEnemy : MonoBehaviour
@@ -19,6 +24,7 @@ public class BeeEnemy : MonoBehaviour
     public float attackCooldown = 1f;     // интервал между атаками
     public int damage = 15;               // урон игроку при атаке
     public float knockbackForce = 3f;
+    public float hoverHeightOffset = 1f; // на какой высоте относительно игрока летать
 
     [Header("Misc")]
     public LayerMask playerLayer;         // слой, на котором находится Player (или используйте Tag)
@@ -40,6 +46,7 @@ public class BeeEnemy : MonoBehaviour
     private bool facingRight = true;      // ориентир для SpriteRenderer flip
     private float lastAttackTime = -999f;
     private bool isDead = false;
+    private bool isAttacking = false;     // флаг что анимация атаки идёт
 
     void Awake()
     {
@@ -60,16 +67,31 @@ public class BeeEnemy : MonoBehaviour
         if (hit != null)
         {
             playerTransform = hit.transform;
-            float distToPlayer = Vector2.Distance(transform.position, playerTransform.position);
 
-            if (distToPlayer <= attackRange)
+            // ВАЖНО: считаем расстояние до ЦЕЛЕВОЙ точки (с учётом высоты), а не до центра игрока
+            Vector2 targetPos = (Vector2)playerTransform.position + Vector2.up * hoverHeightOffset;
+            float distToTarget = Vector2.Distance(transform.position, targetPos);
+
+            // Добавляем небольшой гистерезис чтобы избежать дребезга между состояниями
+            if (state == State.Chase)
             {
-                // Если в зоне атаки — переход в state Attack
-                state = State.Attack;
+                // Если преследуем, переходим в атаку когда ДОСТАТОЧНО близко
+                if (distToTarget <= attackRange)
+                {
+                    state = State.Attack;
+                }
+            }
+            else if (state == State.Attack)
+            {
+                // Если атакуем, возвращаемся к преследованию только если игрок ДАЛЕКО
+                if (distToTarget > attackRange * 1.5f)
+                {
+                    state = State.Chase;
+                }
             }
             else
             {
-                // Если игрок виден, но дальше атаки — преследуем
+                // Из патруля переходим в chase
                 state = State.Chase;
             }
         }
@@ -113,7 +135,8 @@ public class BeeEnemy : MonoBehaviour
         Vector2 targetPos = currentTarget;
         Vector2 dir = (targetPos - (Vector2)pos).normalized;
 
-        rb.MovePosition(pos + dir * patrolSpeed * Time.fixedDeltaTime);
+        // Используем velocity вместо MovePosition для корректной работы с коллизиями
+        rb.linearVelocity = dir * patrolSpeed;
 
         // если достигли цели (по X), переключаем цель
         float distance = Vector2.Distance(pos, targetPos);
@@ -133,13 +156,15 @@ public class BeeEnemy : MonoBehaviour
         if (playerTransform == null) return;
 
         Vector2 pos = rb.position;
-        Vector2 targetPos = playerTransform.position;
-        Vector2 dir = (targetPos - (Vector2)pos);
+        // Летим к игроку с небольшим смещением по Y (чуть выше)
+        Vector2 targetPos = (Vector2)playerTransform.position + Vector2.up * hoverHeightOffset;
+        Vector2 dir = (targetPos - pos);
         float dist = dir.magnitude;
         if (dist > 0.01f) dir = dir.normalized;
         else dir = Vector2.zero;
 
-        rb.MovePosition(pos + dir * chaseSpeed * Time.fixedDeltaTime);
+        // Используем velocity вместо MovePosition для корректной работы с коллизиями
+        rb.linearVelocity = dir * chaseSpeed;
 
         HandleFacing(dir.x);
     }
@@ -152,12 +177,18 @@ public class BeeEnemy : MonoBehaviour
             return;
         }
 
-        // Смотрим на игрока
-        Vector2 toPlayer = playerTransform.position - transform.position;
-        HandleFacing(toPlayer.x);
+        // Останавливаем движение во время атаки
+        rb.linearVelocity = Vector2.zero;
 
-        // Атакуем только если кулдаун прошёл
-        if (Time.time - lastAttackTime >= attackCooldown)
+        // Смотрим на игрока только перед началом атаки
+        if (!isAttacking)
+        {
+            Vector2 toPlayer = playerTransform.position - transform.position;
+            HandleFacing(toPlayer.x);
+        }
+
+        // Атакуем только если кулдаун прошёл и не атакуем сейчас
+        if (!isAttacking && Time.time - lastAttackTime >= attackCooldown)
         {
             DoAttack();
             lastAttackTime = Time.time;
@@ -167,10 +198,15 @@ public class BeeEnemy : MonoBehaviour
     void DoAttack()
     {
         // Запустить анимацию атаки
-        animator.SetTrigger("Attack"); // предполагается триггер "Attack"
+        isAttacking = true;
+        animator.SetTrigger("Attack");
+        // Урон будет нанесён через Animation Event OnAttackHit()
+    }
 
-        // Урон наносим в методе, привязанном к анимации (Animation Event) или сразу
-        // Простая реализация: делаем OverlapCircle в attackRange
+    // Вызывается через Animation Event в середине анимации атаки
+    public void OnAttackHit()
+    {
+        // Наносим урон в момент удара анимации
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, attackRange, playerLayer);
         foreach (var c in hits)
         {
@@ -185,23 +221,31 @@ public class BeeEnemy : MonoBehaviour
                 if (playerRb != null)
                 {
                     Vector2 knock = ((Vector2)c.transform.position - (Vector2)transform.position).normalized;
-                    playerRb.AddForce(knock * knockbackForce, ForceMode2D.Impulse); // лёгкий толчок
+                    playerRb.AddForce(knock * knockbackForce, ForceMode2D.Impulse);
                 }
             }
         }
     }
 
+    // Вызывается через Animation Event в конце анимации атаки
+    public void OnAttackEnd()
+    {
+        isAttacking = false;
+    }
+
     // ------------- utility ----------------
     void HandleFacing(float horizontal)
     {
-        if (Mathf.Abs(horizontal) < 0.01f) return;
+        // Увеличенный порог для предотвращения дребезга флипа
+        if (Mathf.Abs(horizontal) < 0.1f) return;
+
         bool shouldFaceRight = horizontal > 0f;
         if (shouldFaceRight != facingRight)
         {
             facingRight = shouldFaceRight;
-            // Flip sprite: либо использовать SpriteRenderer.flipX либо localScale.x
+            // Flip sprite
             var sr = GetComponentInChildren<SpriteRenderer>();
-            if (sr != null) sr.flipX = !facingRight; // если art смотрит вправо по умолчанию
+            if (sr != null) sr.flipX = facingRight; // flipX = true когда смотрим вправо
         }
     }
 
@@ -210,7 +254,7 @@ public class BeeEnemy : MonoBehaviour
     {
         if (isDead) return;
         // проигрываем хит анимацию
-        animator.SetTrigger("Hurt");
+        animator.SetTrigger("Hit");
         // можно уменьшить здоровье если есть Health компонент:
         var hp = GetComponent<Health>();
         if (hp != null)
@@ -230,15 +274,12 @@ public class BeeEnemy : MonoBehaviour
         foreach (var col in GetComponents<Collider2D>())
             col.enabled = false;
 
-        // анимация смерти
-        animator.SetTrigger("Die"); // параметр "Die"
-
         // эффект смерти
         if (deathVFXPrefab != null)
             Instantiate(deathVFXPrefab, transform.position, Quaternion.identity);
 
-        // уничтожаем через задержку, даём проиграться анимации
-        Destroy(gameObject, despawnDelay);
+        // уничтожаем сразу (пока нет анимации смерти)
+        Destroy(gameObject, 0.1f);
     }
 
     // Визуализация Radius в сцене
