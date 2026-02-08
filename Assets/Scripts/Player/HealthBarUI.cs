@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,7 +7,7 @@ public class HealthBarUI : MonoBehaviour
 
     [Header("References")]
     [Tooltip("Player's Health component")]
-    public Health playerHealth;
+    public Health targetHealth;
 
     [Header("UI Elements")]
     [Tooltip("Slider for displaying health")]
@@ -14,6 +15,8 @@ public class HealthBarUI : MonoBehaviour
 
     [Tooltip("Fill image (alternative to Slider)")]
     public Image healthFillImage;
+
+    public Text healthText;
 
     [Header("Settings")]
     [Tooltip("Speed of health change animation")]
@@ -35,12 +38,16 @@ public class HealthBarUI : MonoBehaviour
     private void Start()
     {
         // Initialize values
-        if (playerHealth != null)
+        if (targetHealth == null)
+            targetHealth = GetComponentInParent<Health>();
+
+        if (targetHealth != null)
         {
-            currentValue = (float)playerHealth.Current / playerHealth.maxHp;
+            currentValue = (float)targetHealth.Current / targetHealth.maxHp;
             targetValue = currentValue;
             UpdateUI(currentValue);
         }
+
     }
 
     private void Update()
@@ -56,17 +63,17 @@ public class HealthBarUI : MonoBehaviour
     private void OnEnable()
     {
         // Subscribe to health change event
-        if (playerHealth != null)
+        if (targetHealth != null)
         {
-            playerHealth.OnHealthChanged += UpdateHealthBar;
+            targetHealth.OnHealthChanged += UpdateHealthBar;
         }
     }
     private void OnDisable()
     {
         // Subscribe to health change event
-        if (playerHealth != null)
+        if (targetHealth != null)
         {
-            playerHealth.OnHealthChanged -= UpdateHealthBar;
+            targetHealth.OnHealthChanged -= UpdateHealthBar;
         }
     }
 
@@ -96,6 +103,8 @@ public class HealthBarUI : MonoBehaviour
 
             // Change color based on health amount
             healthFillImage.color = Color.Lerp(lowHealthColor, fullHealthColor, value / lowHealthThreshold);
+
+            healthText.text = $"{Math.Floor(value * 100)}/100";
         }
     }
 }
