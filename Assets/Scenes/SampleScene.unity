@@ -683,11 +683,11 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
+  m_Sprite: {fileID: 7479226310672599093, guid: b64edcc6662e94a419fe33f5b08e8ea7, type: 3}
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
-  m_FillMethod: 4
+  m_FillMethod: 0
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
@@ -4846,7 +4846,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.849663, y: 9.78574, z: -10}
+  m_LocalPosition: {x: 0.35750127, y: 9.7871, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5139,6 +5139,7 @@ GameObject:
   - component: {fileID: 1214118449}
   - component: {fileID: 1214118448}
   - component: {fileID: 1214118447}
+  - component: {fileID: 1214118450}
   m_Layer: 7
   m_Name: HPBar
   m_TagString: Untagged
@@ -5229,6 +5230,26 @@ Canvas:
   m_SortingLayerID: -1053868911
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &1214118450
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1214118445}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ab81c5d9eba1de4da69b17b4b7fb9a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetHealth: {fileID: 1786225008}
+  healthSlider: {fileID: 0}
+  healthFillImage: {fileID: 104841402}
+  healthText: {fileID: 0}
+  smoothSpeed: 5
+  fullHealthColor: {r: 0, g: 1, b: 0, a: 1}
+  lowHealthColor: {r: 1, g: 0, b: 0, a: 1}
+  lowHealthThreshold: 0.3
 --- !u!1 &1236405612
 GameObject:
   m_ObjectHideFlags: 0
@@ -5713,7 +5734,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackPoint: {fileID: 121654194}
   attackRange: 0.8
-  damage: 25
+  damage: 5
   enemyLayer:
     serializedVersion: 2
     m_Bits: 128

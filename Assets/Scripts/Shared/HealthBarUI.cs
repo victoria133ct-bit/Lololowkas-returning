@@ -104,7 +104,10 @@ public class HealthBarUI : MonoBehaviour
             // Change color based on health amount
             healthFillImage.color = Color.Lerp(lowHealthColor, fullHealthColor, value / lowHealthThreshold);
 
-            healthText.text = $"{Math.Floor(value * 100)}/100";
+            if (healthText != null)
+            {
+                healthText.text = $"{Math.Floor(value * 100)}/100";
+            }
         }
     }
 }

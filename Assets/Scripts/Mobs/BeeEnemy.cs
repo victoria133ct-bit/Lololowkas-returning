@@ -58,6 +58,20 @@ public class BeeEnemy : MonoBehaviour
         else currentTarget = transform.position;
     }
 
+    private void OnEnable()
+    {
+        var hp = GetComponent<Health>();
+        if (hp != null)
+            hp.OnDied += Die;
+    }
+
+    private void OnDisable()
+    {
+        var hp = GetComponent<Health>();
+        if (hp != null)
+            hp.OnDied -= Die;
+    }
+
     void Update()
     {
         if (isDead) return;
