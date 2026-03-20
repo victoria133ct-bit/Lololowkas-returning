@@ -36,10 +36,6 @@ public class Health : MonoBehaviour
 
     public void Heal(int amount)
     {
-        if (Current <= 0)
-        {
-            return;
-        }
 
         Current = Mathf.Clamp(Current + amount, 0, maxHp);
 
