@@ -23,14 +23,14 @@ public class PlayerDeath : MonoBehaviour
 
     private void OnEnable()
     {
-        hp.OnDied += onDied;
+        hp.OnDied += OnDied;
     }
 
     private void OnDisable()
     {
-        hp.OnDied -= onDied;
+        hp.OnDied -= OnDied;
     }
-    void onDied()
+    void OnDied()
     {
         StartCoroutine(DeathRoutine());
     }
