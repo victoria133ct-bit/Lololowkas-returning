@@ -2,6 +2,8 @@
 
 public class PlayerAttack : MonoBehaviour
 {
+    [Header("VFX")]
+    public GameObject hitVFXPrefab;
     [Header("Attack Settings")]
     public Transform attackPoint;       // пустышка перед игроком
     public float attackRange = 0.8f;
@@ -51,6 +53,13 @@ public class PlayerAttack : MonoBehaviour
             {
                 Debug.Log($"Dealing {damage} damage to {c.gameObject.name}");
                 hp.TakeDamage(damage);
+                if(hitVFXPrefab != null)
+                {
+                    Instantiate(
+                        hitVFXPrefab,
+                        c.transform.position,
+                        Quaternion.identity);
+                }
             }
             else
             {

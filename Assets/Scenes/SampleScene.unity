@@ -5968,9 +5968,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f958e3c0fb00d944b987f3978d0ee3f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hitVFXPrefab: {fileID: 4377486377922930359, guid: a2b34640dd9b3524186565e4afbc4dfe, type: 3}
   attackPoint: {fileID: 121654194}
   attackRange: 0.8
-  damage: 5
+  damage: 10
   enemyLayer:
     serializedVersion: 2
     m_Bits: 128
@@ -6109,14 +6110,14 @@ MonoBehaviour:
   attackRange: 1
   chaseSpeed: 3.5
   attackCooldown: 1
-  damage: 50
+  damage: 10
   knockbackForce: 3
   hoverHeightOffset: 1
   playerLayer:
     serializedVersion: 2
     m_Bits: 64
   stunOnHitTime: 0.2
-  deathVFXPrefab: {fileID: 0}
+  deathVFXPrefab: {fileID: 8013199727399626596, guid: 0cb7c800b67d73e4a8d7cf901f49bfde, type: 3}
   despawnDelay: 1
 --- !u!1 &1789419008
 GameObject:

@@ -292,8 +292,12 @@ public class BeeEnemy : MonoBehaviour
         if (deathVFXPrefab != null)
             Instantiate(deathVFXPrefab, transform.position, Quaternion.identity);
 
+        var sr = GetComponentInChildren<SpriteRenderer>();
+        if (sr != null) sr.enabled = false;
+        rb.linearVelocity = Vector2.zero;
+
         // уничтожаем сразу (пока нет анимации смерти)
-        Destroy(gameObject, 0.1f);
+        Destroy(gameObject, despawnDelay);
     }
 
     // Визуализация Radius в сцене
