@@ -8,6 +8,7 @@ public class Health : MonoBehaviour
 
     public int maxHp = 100;
     public int Current { get; private set; }
+    public bool isDead => Current <= 0;
 
     private void Awake()
     {

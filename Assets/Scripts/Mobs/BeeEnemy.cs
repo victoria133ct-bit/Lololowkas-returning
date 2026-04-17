@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 // BeeEnemy: простая state-machine для пчелы (patrol -> chase -> attack -> dead)
@@ -76,8 +77,18 @@ public class BeeEnemy : MonoBehaviour
     {
         if (isDead) return;
 
+
         // 1) Попытка найти игрока в радиусе обнаружения (Physics2D.OverlapCircle)
         Collider2D hit = Physics2D.OverlapCircle(transform.position, detectionRadius, playerLayer);
+
+        if (hit != null) {
+            Health hp = hit.GetComponent<Health>();
+            if (hp.isDead)
+            {
+                hit = null;
+            }
+        }
+
         if (hit != null)
         {
             playerTransform = hit.transform;
@@ -229,6 +240,11 @@ public class BeeEnemy : MonoBehaviour
             if (hp != null)
             {
                 hp.TakeDamage(damage);
+
+                if(CameraShake.Instance != null)
+                {
+                    CameraShake.Instance.Shake(0.1f, 0.2f);
+                }
 
                 // опционально — дать отбрасывание игроку (направление от пчелы)
                 var playerRb = c.GetComponent<Rigidbody2D>();

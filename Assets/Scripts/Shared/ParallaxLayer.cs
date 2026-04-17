@@ -15,11 +15,14 @@ public class ParallaxLayer : MonoBehaviour
 
     void LateUpdate()
     {
-        float lagX = cam.position.x * parallaxFactor;
-        float lagY = cam.position.y * parallaxFactor;
+        Vector3 camPos = cam.position;
+        if (CameraShake.Instance != null)
+            camPos -= CameraShake.Instance.ShakeOffset;
+
+        float lagX = camPos.x * parallaxFactor;
         transform.position = new Vector3(
-            cam.position.x + startOffset.x - lagX,
-            startOffset.y + cam.position.y,
+            camPos.x + startOffset.x - lagX,
+            startOffset.y + camPos.y,
             transform.position.z
         );
     }

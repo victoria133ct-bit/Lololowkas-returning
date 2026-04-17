@@ -51,25 +51,5 @@ public class PlayerDeath : MonoBehaviour
         if (animator != null) animator.SetTrigger("Die");
 
         yield return new WaitForSeconds(deathAnimationDuration);
-
-        //Respawn();
-    }
-    void Respawn()
-    {
-
-        if (respawnPoint != null)
-            transform.position = respawnPoint.position;
-        else
-            transform.position = Vector3.zero;
-
-        Rigidbody2D rb = GetComponent<Rigidbody2D>();
-        if (rb != null)
-            rb.bodyType = RigidbodyType2D.Dynamic;
-        rb.linearVelocity = Vector2.zero;
-
-        hp.Heal(hp.maxHp);
-
-        if (inputHandler != null) inputHandler.enabled = true;
-        if (movement != null) movement.enabled = true;
     }
 }
