@@ -13,6 +13,8 @@ public class PlayerDeath : MonoBehaviour
     private PlayerMovement movement;
     private PlayerInputHandler inputHandler;
 
+    [SerializeField] private PlayerGameOver gameOverUI;
+
     private void Awake()
     {
         hp = GetComponent<Health>();
@@ -32,6 +34,9 @@ public class PlayerDeath : MonoBehaviour
     }
     void OnDied()
     {
+        if (gameOverUI != null)
+            gameOverUI.ShowGameOver();
+
         StartCoroutine(DeathRoutine());
     }
     private IEnumerator DeathRoutine()
@@ -47,7 +52,7 @@ public class PlayerDeath : MonoBehaviour
 
         yield return new WaitForSeconds(deathAnimationDuration);
 
-        Respawn();
+        //Respawn();
     }
     void Respawn()
     {

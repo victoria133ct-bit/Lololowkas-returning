@@ -27,7 +27,6 @@ public class PlayerAttack : MonoBehaviour
 
         if (inputHandler != null && inputHandler.ConsumeAttack())
         {
-            Debug.Log("Trigger");
             // Запустить анимацию атаки. Урон будет нанесён через Animation Event (OnAttackHit)
             animator.SetTrigger("Attack");
             lastAttackTime = Time.time;
@@ -44,14 +43,12 @@ public class PlayerAttack : MonoBehaviour
         }
 
         Collider2D[] hits = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayer);
-        Debug.Log($"Attack hits found: {hits.Length}");
 
         foreach (var c in hits)
         {
             var hp = c.GetComponent<Health>();
             if (hp != null)
             {
-                Debug.Log($"Dealing {damage} damage to {c.gameObject.name}");
                 hp.TakeDamage(damage);
                 if(hitVFXPrefab != null)
                 {
