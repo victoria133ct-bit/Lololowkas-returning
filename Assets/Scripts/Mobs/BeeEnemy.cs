@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
 // BeeEnemy: простая state-machine для пчелы (patrol -> chase -> attack -> dead)
@@ -77,16 +76,15 @@ public class BeeEnemy : MonoBehaviour
     {
         if (isDead) return;
 
-
         // 1) Попытка найти игрока в радиусе обнаружения (Physics2D.OverlapCircle)
         Collider2D hit = Physics2D.OverlapCircle(transform.position, detectionRadius, playerLayer);
 
-        if (hit != null) {
-            Health hp = hit.GetComponent<Health>();
-            if (hp.isDead)
-            {
+        // Если игрок мёртв — игнорируем его, возвращаемся в патруль
+        if (hit != null)
+        {
+            var playerHp = hit.GetComponent<Health>();
+            if (playerHp != null && playerHp.IsDead)
                 hit = null;
-            }
         }
 
         if (hit != null)
@@ -237,21 +235,23 @@ public class BeeEnemy : MonoBehaviour
         {
             // попадаем игрока
             var hp = c.GetComponent<Health>();
-            if (hp != null)
+            if (hp != null && !hp.IsDead)
             {
                 hp.TakeDamage(damage);
 
-                if(CameraShake.Instance != null)
-                {
-                    CameraShake.Instance.Shake(0.1f, 0.2f);
-                }
+                // Тряска камеры при получении урона игроком
+                if (CameraShake.Instance != null)
+                    CameraShake.Instance.Shake(0.15f, 0.2f);
 
-                // опционально — дать отбрасывание игроку (направление от пчелы)
-                var playerRb = c.GetComponent<Rigidbody2D>();
-                if (playerRb != null)
+                // Knockback только если игрок ещё жив (этот удар мог убить)
+                if (!hp.IsDead)
                 {
-                    Vector2 knock = ((Vector2)c.transform.position - (Vector2)transform.position).normalized;
-                    playerRb.AddForce(knock * knockbackForce, ForceMode2D.Impulse);
+                    var playerRb = c.GetComponent<Rigidbody2D>();
+                    if (playerRb != null)
+                    {
+                        Vector2 knock = ((Vector2)c.transform.position - (Vector2)transform.position).normalized;
+                        playerRb.AddForce(knock * knockbackForce, ForceMode2D.Impulse);
+                    }
                 }
             }
         }

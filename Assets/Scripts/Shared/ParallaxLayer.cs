@@ -15,6 +15,7 @@ public class ParallaxLayer : MonoBehaviour
 
     void LateUpdate()
     {
+        // Берём позицию камеры БЕЗ тряски, иначе фоны будут дёргаться
         Vector3 camPos = cam.position;
         if (CameraShake.Instance != null)
             camPos -= CameraShake.Instance.ShakeOffset;

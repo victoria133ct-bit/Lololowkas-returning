@@ -57,6 +57,9 @@ public class PlayerAttack : MonoBehaviour
                         c.transform.position,
                         Quaternion.identity);
                 }
+                // Тряска камеры при попадании по врагу
+                if (CameraShake.Instance != null)
+                    CameraShake.Instance.Shake(0.1f, 0.1f);
             }
             else
             {

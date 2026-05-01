@@ -32,6 +32,13 @@ public class HealthBarUI : MonoBehaviour
     [Range(0f, 1f)]
     public float lowHealthThreshold = 0.3f;
 
+    [Header("Auto-hide")]
+    [Tooltip("Скрывать полоску когда HP полное")]
+    public bool hideWhenFull = false;
+
+    [Tooltip("Корневой объект который скрывать (если пусто — этот объект)")]
+    public GameObject rootToHide;
+
     private float targetValue;
     private float currentValue;
 
@@ -83,6 +90,13 @@ public class HealthBarUI : MonoBehaviour
     private void UpdateHealthBar(int current, int max)
     {
         targetValue = (float)current / max;
+
+        // Скрываем/показываем полоску в зависимости от HP
+        if (hideWhenFull)
+        {
+            GameObject root = rootToHide != null ? rootToHide : gameObject;
+            root.SetActive(current < max);
+        }
     }
 
     /// <summary>

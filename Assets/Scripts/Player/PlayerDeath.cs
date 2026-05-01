@@ -44,9 +44,18 @@ public class PlayerDeath : MonoBehaviour
         if (inputHandler != null) inputHandler.enabled = false;
         if (movement != null) movement.enabled = false;
 
+        // Останавливаем горизонтальное движение, гравитация работает
         Rigidbody2D rb = GetComponent<Rigidbody2D>();
         if (rb != null) rb.linearVelocity = Vector2.zero;
-        rb.bodyType = RigidbodyType2D.Kinematic;
+
+        // Поворачиваем коллайдер из вертикального в горизонтальный — труп лежит
+        var capsule = GetComponent<CapsuleCollider2D>();
+        if (capsule != null)
+        {
+            capsule.direction = CapsuleDirection2D.Horizontal;
+            // Меняем местами ширину и высоту чтобы капсула стала лежащей
+            capsule.size = new Vector2(capsule.size.y, capsule.size.x);
+        }
 
         if (animator != null) animator.SetTrigger("Die");
 
