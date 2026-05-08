@@ -19,7 +19,15 @@ public class DamageNumber : MonoBehaviour
     public static void Spawn(GameObject prefab, Vector3 position, int damage)
     {
         if (prefab == null) return;
-        var obj = Instantiate(prefab, position, Quaternion.identity);
+
+        // Случайное смещение чтобы числа не наслаивались
+        Vector3 offset = new Vector3(
+            Random.Range(-0.3f, 0.3f),
+            Random.Range(0f, 0.2f),
+            0
+        );
+
+        var obj = Instantiate(prefab, position + offset, Quaternion.identity);
         var dn = obj.GetComponent<DamageNumber>();
         if (dn != null) dn.SetDamage(damage);
     }

@@ -17,7 +17,6 @@ public class PlayerInputHandler : MonoBehaviour
 
     private void OnEnable()
     {
-        Debug.Log("Enable");
         controls.Player.Enable();
         controls.Player.Move.performed += ctx => moveInput = ctx.ReadValue<Vector2>();
         controls.Player.Move.canceled += ctx => moveInput = Vector2.zero;
@@ -28,7 +27,6 @@ public class PlayerInputHandler : MonoBehaviour
 
     private void OnDisable()
     {
-        Debug.Log("Disable");
         controls.Player.Disable();
     }
 

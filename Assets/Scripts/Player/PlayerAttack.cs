@@ -64,10 +64,6 @@ public class PlayerAttack : MonoBehaviour
                 if (CameraShake.Instance != null)
                     CameraShake.Instance.Shake(0.1f, 0.1f);
             }
-            else
-            {
-                Debug.Log($"Hit {c.gameObject.name} but no Health component found");
-            }
         }
     }
 
