@@ -4,6 +4,7 @@ public class PlayerAttack : MonoBehaviour
 {
     [Header("VFX")]
     public GameObject hitVFXPrefab;
+    public GameObject damageNumberPrefab;
     [Header("Attack Settings")]
     public Transform attackPoint;       // пустышка перед игроком
     public float attackRange = 0.8f;
@@ -57,6 +58,8 @@ public class PlayerAttack : MonoBehaviour
                         c.transform.position,
                         Quaternion.identity);
                 }
+
+                DamageNumber.Spawn(damageNumberPrefab, c.transform.position + Vector3.up * 0.5f, damage);
                 // Тряска камеры при попадании по врагу
                 if (CameraShake.Instance != null)
                     CameraShake.Instance.Shake(0.1f, 0.1f);

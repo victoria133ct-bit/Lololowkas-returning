@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7287407907924370581}
   - component: {fileID: 8135033898382253817}
   - component: {fileID: 4689768492317254627}
+  - component: {fileID: -3239148834294509514}
   m_Layer: 0
   m_Name: HalfemptyBottle
   m_TagString: Untagged
@@ -124,3 +125,17 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: -0.024662018, y: -0.16646576}
   m_Radius: 0.35819578
+--- !u!114 &-3239148834294509514
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1078456408594194057}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbdf4d7dc614f914883b953635142841, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pickupVFXPrefab: {fileID: 2914231185588622132, guid: c8f20143ea11a6447a3a23e311994617, type: 3}
+  healAmount: 15
