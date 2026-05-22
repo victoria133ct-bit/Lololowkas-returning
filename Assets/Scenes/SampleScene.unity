@@ -4962,7 +4962,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.35674912, y: 9.7871, z: -10}
+  m_LocalPosition: {x: 16.552347, y: 9.7831, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5322,6 +5322,7 @@ GameObject:
   - component: {fileID: 1074962636}
   - component: {fileID: 1074962635}
   - component: {fileID: 1074962634}
+  - component: {fileID: 1074962639}
   m_Layer: 0
   m_Name: Bringer
   m_TagString: Untagged
@@ -5338,7 +5339,7 @@ Transform:
   m_GameObject: {fileID: 1074962632}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 18.22, y: 11.89, z: -0.053092077}
+  m_LocalPosition: {x: 18.4, y: 10.54, z: -0.053092077}
   m_LocalScale: {x: 5, y: 5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5413,8 +5414,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Size: {x: 0.42, y: 0.56}
+  m_Offset: {x: -0.12997094, y: 0.2739933}
+  m_Size: {x: 0.41297457, y: 0.6091782}
   m_Direction: 0
 --- !u!50 &1074962637
 Rigidbody2D:
@@ -5498,6 +5499,29 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1074962639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1074962632}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acfbd472e1cd39b4482d55a3e1b00d90, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  detectionRadius: 6
+  meleeRange: 2
+  spellRange: 4
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  walkSpeed: 1.8
+  meleeDamage: 20
+  spellDamage: 15
+  attackCooldown: 1.5
+  spellPrefab: {fileID: 1963505050091952715, guid: f88644ed1b3134c47ad30316903b8c7b, type: 3}
 --- !u!1 &1191667539
 GameObject:
   m_ObjectHideFlags: 0
@@ -5795,7 +5819,7 @@ Transform:
   m_GameObject: {fileID: 1236405612}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.18, y: 12.23, z: -10}
+  m_LocalPosition: {x: 20.27, y: 16.21, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -14836,11 +14860,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8936360575983902263, guid: 0945975f532b3e649af796325be2fcc6, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.18
+      value: 20.27
       objectReference: {fileID: 0}
     - target: {fileID: 8936360575983902263, guid: 0945975f532b3e649af796325be2fcc6, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 12.23
+      value: 16.21
       objectReference: {fileID: 0}
     - target: {fileID: 8936360575983902263, guid: 0945975f532b3e649af796325be2fcc6, type: 3}
       propertyPath: m_LocalPosition.z

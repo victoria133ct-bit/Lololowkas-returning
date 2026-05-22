@@ -1,5 +1,4 @@
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Animator))]
@@ -76,7 +75,8 @@ public class BringerEnemy : MonoBehaviour
         if(hit == null)
         {
             state = State.Idle;
-            rb.linearVelocity = Vector3.zero;
+            rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
+            animator.SetBool("IsWalking", false);
             return;
         }
         playerTransform = hit.transform;
@@ -136,7 +136,7 @@ public class BringerEnemy : MonoBehaviour
 
     void TryMeleeAttack()
     {
-        rb.linearVelocity = Vector2.zero;
+        rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
         // TODO: ????????????, ??????????? ? ??????
         animator.SetBool("IsWalking", false);
 
@@ -154,7 +154,7 @@ public class BringerEnemy : MonoBehaviour
     void TryCastSpell()
     {
         // TODO: ?? ?? ??? MeleeAttack, ?? animator.SetTrigger("Cast")
-        rb.linearVelocity = Vector2.zero;
+        rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
         animator.SetBool("IsWalking", false);
 
         HandleFacing(playerTransform.position.x - transform.position.x);
@@ -218,11 +218,10 @@ public class BringerEnemy : MonoBehaviour
         foreach (var col in GetComponents<Collider2D>())
             col.enabled = false;
 
-        var sr = GetComponentInChildren<SpriteRenderer>();
-        if (sr != null) sr.enabled = false;
         rb.linearVelocity = Vector2.zero;
 
         // ?????????? ????? (???? ??? ???????? ??????)
+        animator.SetTrigger("Die");
         Destroy(gameObject, 2f);
     }
 
