@@ -22,7 +22,7 @@ public class DamageNumber : MonoBehaviour
 
         // Случайное смещение чтобы числа не наслаивались
         Vector3 offset = new Vector3(
-            Random.Range(-0.3f, 0.3f),
+            Random.Range(-0.7f, 0.3f),
             Random.Range(0f, 0.2f),
             0
         );
